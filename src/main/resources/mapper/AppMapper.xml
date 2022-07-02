@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.task.AppMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.task.App">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="file_size" jdbcType="VARCHAR" property="fileSize" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from app
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByFileName" parameterType="java.lang.String">
+      delete from app
+        where file_name = #{fileName,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" keyProperty="id" parameterType="com.example.demo.po.task.App" useGeneratedKeys="true">
+    insert into app (id, task_id, file_name, 
+      url, file_size, upload_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{fileSize,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.task.App">
+    update app
+    set task_id = #{taskId,jdbcType=INTEGER},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, task_id, file_name, url, file_size, upload_time
+    from app
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, task_id, file_name, url, file_size, upload_time
+    from app
+    where task_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, task_id, file_name, url, file_size, upload_time
+    from app
+  </select>
+</mapper>

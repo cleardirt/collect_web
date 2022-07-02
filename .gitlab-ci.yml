@@ -1,0 +1,48 @@
+image: java:8
+
+stages:
+  - root_package
+  - build 
+ 
+services:
+  - docker:dind
+
+#目前只需要jar包这个资产，依赖在宿主机上，不需要这个cache
+#cache:
+# key: push-maven
+# paths:
+#   - /root/.m2/
+#   - target/*.jar
+
+maven-package:
+  image: maven:3.6.3-jdk-8
+  stage: root_package
+  script:
+    - echo "===============目录结构  ===============" `ls`
+    - echo "=============== 开始编译源码，包含单元测试，在target目录生成jar文件 ==============="
+    - mvn clean 
+    - mvn install
+    - echo "target文件夹" `ls target/`
+    - docker rm -f test_html
+    - mv src/Dockerfile target/site/
+    - cd target/site/
+    - docker build -t test_html .
+    - docker run -d --restart=always --name test_html -p 8080:80 test_html
+  artifacts:
+    paths:
+      - target/*.jar
+
+build-deploy-docker-dev:
+  stage: build
+  only:
+    - master
+  script:
+    - echo "===== 从缓存中恢复的target文件夹 ====="
+    - ls -l
+    - mv Dockerfile target/
+    - cd target/
+    - echo "===== 后续发布 ====="
+    - docker rm -f demo
+    - ls -l
+    - docker build -t collect_test .
+    - docker run --net=host -d --restart=always --name demo collect_test

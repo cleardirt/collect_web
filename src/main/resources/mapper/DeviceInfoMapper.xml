@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.report.DeviceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.report.DeviceInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="explanation" jdbcType="LONGVARCHAR" property="explanation" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from device_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByTaskId" parameterType="java.lang.Integer">
+      delete from device_info
+        where task_id = #{task_id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyProperty="id" parameterType="com.example.demo.po.report.DeviceInfo" useGeneratedKeys="true">
+    insert into device_info (id, task_id, explanation
+      )
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{explanation,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.report.DeviceInfo">
+    update device_info
+    set task_id = #{taskId,jdbcType=INTEGER},
+      explanation = #{explanation,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, task_id, explanation
+    from device_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, task_id, explanation
+    from device_info
+  </select>
+  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select device_info.id, device_info.task_id, device_info.explanation
+    from device_info
+        inner join task
+            on device_info.task_id = task.id
+    where device_info.task_id = #{task_id,jdbcType=INTEGER}
+  </select>
+</mapper>

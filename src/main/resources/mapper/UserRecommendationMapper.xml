@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.user.UserRecommendationMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.user.UserRecommendation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="recommend_list" jdbcType="VARCHAR" property="recommendList" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_task_recommendation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByUid" parameterType="java.lang.Integer">
+      delete from user_task_recommendation
+        where uid = #{user_id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.demo.po.user.UserRecommendation" keyProperty="id" useGeneratedKeys="true">
+    insert into user_task_recommendation (id, uid, recommend_list
+      )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{recommendList,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.user.UserRecommendation">
+    update user_task_recommendation
+    set uid = #{uid,jdbcType=INTEGER},
+      recommend_list = #{recommendList,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, uid, recommend_list
+    from user_task_recommendation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, uid, recommend_list
+    from user_task_recommendation
+    where uid = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, uid, recommend_list
+    from user_task_recommendation
+  </select>
+</mapper>

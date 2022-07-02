@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.user.UserMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.user.User">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="UserPass" jdbcType="VARCHAR" property="userpass" />
+    <result column="user_role" jdbcType="VARCHAR" property="userRole" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="activity" jdbcType="INTEGER" property="activity" />
+    <result column="professional_ability" jdbcType="DECIMAL" property="professionalAbility" />
+    <result column="rating_ability" jdbcType="DECIMAL" property="ratingAbility" />
+    <result column="credit" jdbcType="DECIMAL" property="credit" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from userinfo
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.po.user.User" keyProperty="id" useGeneratedKeys="true">
+    insert into userinfo (Id, UserName, phone, 
+      UserPass, user_role, create_time, 
+      activity, professional_ability, rating_ability, 
+      credit)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{userpass,jdbcType=VARCHAR}, #{userRole,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{activity,jdbcType=INTEGER}, #{professionalAbility,jdbcType=DECIMAL}, #{ratingAbility,jdbcType=DECIMAL}, 
+      #{credit,jdbcType=DECIMAL})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.user.User">
+    update userinfo
+    set UserName = #{username,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      UserPass = #{userpass,jdbcType=VARCHAR},
+      user_role = #{userRole,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      activity = #{activity,jdbcType=INTEGER},
+      professional_ability = #{professionalAbility,jdbcType=DECIMAL},
+      rating_ability = #{ratingAbility,jdbcType=DECIMAL},
+      credit = #{credit,jdbcType=DECIMAL}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select Id, UserName, phone, UserPass, user_role, create_time, activity, professional_ability, 
+    rating_ability, credit
+    from userinfo
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Id, UserName, phone, UserPass, user_role, create_time, activity, professional_ability, 
+    rating_ability, credit
+    from userinfo
+  </select>
+  <select id="selectAllByRole" resultMap="BaseResultMap">
+    select Id, UserName, phone, UserPass, user_role, create_time, activity, professional_ability, rating_ability, credit
+    from userinfo
+    where user_role = #{role,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select u.Id, u.UserName, u.phone, u.UserPass, u.user_role, u.create_time, u.activity, u.professional_ability, u.rating_ability, u.credit
+    from userinfo as u
+    join `task_progress` as p
+    on p.worker_id=u.Id
+    where p.task_id=#{id,jdbcType=INTEGER}
+    group by u.id
+  </select>
+  <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Id, UserName, phone, UserPass, user_role, create_time, activity, professional_ability, rating_ability, credit
+    from userinfo
+    where phone = #{phone}
+    limit 0,1
+  </select>
+</mapper>

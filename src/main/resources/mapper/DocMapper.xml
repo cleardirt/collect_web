@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.task.DocMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.task.Doc">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="file_size" jdbcType="VARCHAR" property="fileSize" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from doc
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="id" parameterType="com.example.demo.po.task.Doc" useGeneratedKeys="true">
+    insert into doc (id, task_id, file_name,
+                     url, file_size, upload_time
+    )
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR},
+            #{url,jdbcType=VARCHAR}, #{fileSize,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP}
+           )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.task.Doc">
+    update doc
+    set task_id = #{taskId,jdbcType=INTEGER},
+        file_name = #{fileName,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        file_size = #{fileSize,jdbcType=VARCHAR},
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, task_id, file_name, url, file_size, upload_time
+    from doc
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, task_id, file_name, url, file_size, upload_time
+    from doc
+    where task_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, task_id, file_name, url, file_size, upload_time
+    from doc
+  </select>
+</mapper>

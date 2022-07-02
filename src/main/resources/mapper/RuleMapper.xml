@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.task.RuleMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.task.Rule">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="professional_ability_ranking" jdbcType="BIT" property="professionalAbilityRanking" />
+    <result column="sort_by_task_category" jdbcType="BIT" property="sortByTaskCategory" />
+    <result column="test_equipment_sorting" jdbcType="BIT" property="testEquipmentSorting" />
+    <result column="selected" jdbcType="BIT" property="selected" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.po.task.Rule"  keyProperty="id" useGeneratedKeys="true">
+    insert into rule (id, professional_ability_ranking, sort_by_task_category, 
+      test_equipment_sorting, selected)
+    values (#{id,jdbcType=INTEGER}, #{professionalAbilityRanking,jdbcType=BIT}, #{sortByTaskCategory,jdbcType=BIT}, 
+      #{testEquipmentSorting,jdbcType=BIT}, #{selected,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.task.Rule">
+    update rule
+    set professional_ability_ranking = #{professionalAbilityRanking,jdbcType=BIT},
+      sort_by_task_category = #{sortByTaskCategory,jdbcType=BIT},
+      test_equipment_sorting = #{testEquipmentSorting,jdbcType=BIT},
+      selected = #{selected,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, professional_ability_ranking, sort_by_task_category, test_equipment_sorting, 
+    selected
+    from rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectCurrentRule" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, professional_ability_ranking, sort_by_task_category, test_equipment_sorting,
+           selected
+    from rule
+    where selected = 1
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, professional_ability_ranking, sort_by_task_category, test_equipment_sorting, 
+    selected
+    from rule
+  </select>
+    <select id="selectByStatus" parameterType="map" resultMap="BaseResultMap">
+      select id, professional_ability_ranking, sort_by_task_category, test_equipment_sorting,
+             selected
+      from rule
+        where professional_ability_ranking=#{p,jdbcType=BIT} and sort_by_task_category=#{s,jdbcType=BIT}
+        and test_equipment_sorting=#{t,jdbcType=BIT}
+    </select>
+</mapper>

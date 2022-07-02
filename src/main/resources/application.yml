@@ -1,0 +1,34 @@
+server:
+  port: 8081
+
+
+
+spring:
+  datasource:
+#    url: jdbc:mysql://mysql-new-service.xs-hw-back-end-95.svc.cluster.local:3306/courselearning?setUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/my_sql?setUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  #    password: root
+  servlet:
+    multipart:
+      max-file-size: 200MB #设置上传文件大小不得超过200MB
+      max-request-size: 210MB #设置一次请求的数据量不得超过200MB
+      enabled: true
+  web:
+    resources:
+      static-locations: classpath:/static/
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+# 设置日志输出
+logging:
+  level:
+    #cn.seecoder.courselearning.mapperservice: DEBUG
+    com.example.demo.service: DEBUG
+#mybatis-pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

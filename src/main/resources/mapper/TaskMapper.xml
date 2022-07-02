@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.task.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.task.Task">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="brief_intro" jdbcType="VARCHAR" property="briefIntro" />
+    <result column="test_start_time" jdbcType="TIMESTAMP" property="testStartTime" />
+    <result column="test_end_time" jdbcType="TIMESTAMP" property="testEndTime" />
+    <result column="is_open" jdbcType="BIT" property="isOpen" />
+    <result column="worker_num" jdbcType="INTEGER" property="workerNum" />
+    <result column="test_type" jdbcType="VARCHAR" property="testType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="auftraggeber_id" jdbcType="INTEGER" property="auftraggeberId" />
+    <result column="auftraggeber_name" jdbcType="VARCHAR" property="auftraggeberName" />
+    <result column="select_state" jdbcType="INTEGER" property="selectState" />
+    <result column="in_progress" jdbcType="INTEGER" property="inProgress" />
+    <result column="difficulty" jdbcType="INTEGER" property="difficulty" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="id" parameterType="com.example.demo.po.task.Task" useGeneratedKeys="true">
+    insert into task (id, title, brief_intro,
+                      test_start_time, test_end_time, is_open,
+                      worker_num, test_type, create_time,
+                      delete_time, auftraggeber_id, auftraggeber_name,
+                      select_state, in_progress, difficulty
+    )
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{briefIntro,jdbcType=VARCHAR},
+            #{testStartTime,jdbcType=TIMESTAMP}, #{testEndTime,jdbcType=TIMESTAMP}, #{isOpen,jdbcType=BIT},
+            #{workerNum,jdbcType=INTEGER}, #{testType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{deleteTime,jdbcType=TIMESTAMP}, #{auftraggeberId,jdbcType=INTEGER}, #{auftraggeberName,jdbcType=VARCHAR},
+            #{selectState,jdbcType=INTEGER}, #{inProgress,jdbcType=INTEGER}, #{difficulty,jdbcType=INTEGER}
+           )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.task.Task">
+    update task
+    set title = #{title,jdbcType=VARCHAR},
+        brief_intro = #{briefIntro,jdbcType=VARCHAR},
+        test_start_time = #{testStartTime,jdbcType=TIMESTAMP},
+        test_end_time = #{testEndTime,jdbcType=TIMESTAMP},
+        is_open = #{isOpen,jdbcType=BIT},
+        worker_num = #{workerNum,jdbcType=INTEGER},
+        test_type = #{testType,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+        auftraggeber_id = #{auftraggeberId,jdbcType=INTEGER},
+        auftraggeber_name = #{auftraggeberName,jdbcType=VARCHAR},
+        select_state = #{selectState,jdbcType=INTEGER},
+        in_progress = #{inProgress,jdbcType=INTEGER},
+        difficulty = #{difficulty,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+  </select>
+  <select id="selectInProgressAll" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where test_start_time <![CDATA[ <= ]]> #{nowtime} and test_end_time <![CDATA[ >= ]]> #{nowtime}
+  </select>
+   <select id="selectIdInProgressAll" resultType="java.lang.Integer">
+        select id
+        from task
+        where test_start_time <![CDATA[ <= ]]> #{nowtime} and test_end_time <![CDATA[ >= ]]> #{nowtime}
+   </select>
+  <select id="selectInProgressAllBYType" parameterType="map" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where test_start_time <![CDATA[ <= ]]> #{nowtime} and test_end_time <![CDATA[ >= ]]> #{nowtime} and test_type=#{type,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where test_type=#{type,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAuftarAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where auftraggeber_id=#{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAuftarAllAndType" parameterType="map" resultMap="BaseResultMap">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where auftraggeber_id=#{uid,jdbcType=INTEGER} and test_type=#{type,jdbcType=VARCHAR}
+  </select>
+  <select id="selectUserAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select t.id, t.title, t.brief_intro, t.test_start_time, t.test_end_time, t.is_open, t.worker_num,
+           t.test_type, t.create_time, t.delete_time, t.auftraggeber_id, t.auftraggeber_name, t.select_state,
+           t.in_progress, t.difficulty
+    from task as t
+    join `task_progress` as p
+    on p.task_id=t.id
+    where p.worker_id=#{id,jdbcType=INTEGER}
+    group by t.id
+  </select>
+  <select id="selectUserAllFinished" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select t.id, t.title, t.brief_intro, t.test_start_time, t.test_end_time, t.is_open, t.worker_num,
+           t.test_type, t.create_time, t.delete_time, t.auftraggeber_id, t.auftraggeber_name, t.select_state,
+           t.in_progress, t.difficulty
+    from task as t
+    join `task_progress` as p
+    on p.task_id=t.id
+    where p.worker_id=#{id,jdbcType=INTEGER} and p.is_finished=1
+    group by t.id
+  </select>
+  <select id="selectUserAllUnfinished" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select t.id, t.title, t.brief_intro, t.test_start_time, t.test_end_time, t.is_open, t.worker_num,
+           t.test_type, t.create_time, t.delete_time, t.auftraggeber_id, t.auftraggeber_name, t.select_state,
+           t.in_progress, t.difficulty
+    from task as t
+    join `task_progress` as p
+    on p.task_id=t.id
+    where p.worker_id=#{id,jdbcType=INTEGER} and p.is_finished=0
+    group by t.id
+  </select>
+  <select id="selectUserAllAndType" parameterType="map" resultMap="BaseResultMap">
+    select t.id, t.title, t.brief_intro, t.test_start_time, t.test_end_time, t.is_open, t.worker_num,
+           t.test_type, t.create_time, t.delete_time, t.auftraggeber_id, t.auftraggeber_name, t.select_state,
+           t.in_progress, t.difficulty
+    from task as t
+    join `task_progress` as p
+    on p.task_id=t.id
+    where p.worker_id=#{uid,jdbcType=INTEGER} and t.test_type=#{type,jdbcType=VARCHAR}
+    group by t.id
+  </select>
+  <select id="selectUserAllAndTypeFinished" parameterType="map" resultMap="BaseResultMap">
+    select t.id, t.title, t.brief_intro, t.test_start_time, t.test_end_time, t.is_open, t.worker_num,
+           t.test_type, t.create_time, t.delete_time, t.auftraggeber_id, t.auftraggeber_name, t.select_state,
+           t.in_progress, t.difficulty
+    from task as t
+    join `task_progress` as p
+    on p.task_id=t.id
+    where p.worker_id=#{uid,jdbcType=INTEGER} and t.test_type=#{type,jdbcType=VARCHAR} and p.is_finished=1
+    group by t.id
+  </select>
+  <select id="selectUserAllAndTypeUnFinished" parameterType="map" resultMap="BaseResultMap">
+    select t.id, t.title, t.brief_intro, t.test_start_time, t.test_end_time, t.is_open, t.worker_num,
+           t.test_type, t.create_time, t.delete_time, t.auftraggeber_id, t.auftraggeber_name, t.select_state,
+           t.in_progress, t.difficulty
+    from task as t
+    join `task_progress` as p
+    on p.task_id=t.id
+    where p.worker_id=#{uid,jdbcType=INTEGER} and t.test_type=#{type,jdbcType=VARCHAR} and p.is_finished=0
+    group by t.id
+  </select>
+  <select id="selectTaskOfAuftra" parameterType="map" resultType="com.example.demo.po.task.Task">
+    select id, title, brief_intro, test_start_time, test_end_time, is_open, worker_num,
+           test_type, create_time, delete_time, auftraggeber_id, auftraggeber_name, select_state,
+           in_progress, difficulty
+    from task
+    where id = #{task_id,jdbcType=INTEGER} and auftraggeber_id = #{uid,jdbcType=INTEGER}
+  </select>
+  <select id="selectEndsToday" parameterType="map" resultType="java.lang.Integer">
+      select id
+       from task
+      where test_end_time <![CDATA[ <= ]]> #{today} and test_end_time <![CDATA[ >= ]]> #{yesterday}
+  </select>
+</mapper>

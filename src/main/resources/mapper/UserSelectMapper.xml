@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.user.UserSelectMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.user.UserSelect">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="function_test" jdbcType="INTEGER" property="functionTest" />
+    <result column="performance_test" jdbcType="INTEGER" property="performanceTest" />
+    <result column="bug_explore" jdbcType="INTEGER" property="bugExplore" />
+    <result column="usecase_execution" jdbcType="INTEGER" property="usecaseExecution" />
+    <result column="device_connection" jdbcType="INTEGER" property="deviceConnection" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_select
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByUid" parameterType="java.lang.Integer">
+      delete from user_select
+        where user_id = #{user_id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.demo.po.user.UserSelect" useGeneratedKeys="true" keyProperty="id">
+    insert into user_select (id, user_id, function_test, 
+      performance_test, bug_explore, usecase_execution, 
+      device_connection)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{functionTest,jdbcType=INTEGER}, 
+      #{performanceTest,jdbcType=INTEGER}, #{bugExplore,jdbcType=INTEGER}, #{usecaseExecution,jdbcType=INTEGER}, 
+      #{deviceConnection,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.user.UserSelect">
+    update user_select
+    set user_id = #{userId,jdbcType=INTEGER},
+      function_test = #{functionTest,jdbcType=INTEGER},
+      performance_test = #{performanceTest,jdbcType=INTEGER},
+      bug_explore = #{bugExplore,jdbcType=INTEGER},
+      usecase_execution = #{usecaseExecution,jdbcType=INTEGER},
+      device_connection = #{deviceConnection,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, function_test, performance_test, bug_explore, usecase_execution, 
+    device_connection
+    from user_select
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, function_test, performance_test, bug_explore, usecase_execution,
+           device_connection
+    from user_select
+    where user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, function_test, performance_test, bug_explore, usecase_execution, 
+    device_connection
+    from user_select
+  </select>
+</mapper>

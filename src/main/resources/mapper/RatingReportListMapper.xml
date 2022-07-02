@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.report.RatingReportListMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.report.RatingReportList">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="report_to_rate" jdbcType="VARCHAR" property="reportToRate" />
+    <result column="rated_report" jdbcType="VARCHAR" property="ratedReport" />
+    <result column="rating_willingness" jdbcType="DECIMAL" property="ratingWillingness" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from report_to_rate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.po.report.RatingReportList" keyProperty="id" useGeneratedKeys="true">
+    insert into report_to_rate (id, uid, report_to_rate, 
+      rated_report, rating_willingness)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{reportToRate,jdbcType=VARCHAR}, 
+      #{ratedReport,jdbcType=VARCHAR}, #{ratingWillingness,jdbcType=DECIMAL})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.report.RatingReportList">
+    update report_to_rate
+    set uid = #{uid,jdbcType=INTEGER},
+      report_to_rate = #{reportToRate,jdbcType=VARCHAR},
+      rated_report = #{ratedReport,jdbcType=VARCHAR},
+      rating_willingness = #{ratingWillingness,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, uid, report_to_rate, rated_report, rating_willingness
+    from report_to_rate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, uid, report_to_rate, rated_report, rating_willingness
+    from report_to_rate
+  </select>
+  <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, uid, report_to_rate, rated_report, rating_willingness
+    from report_to_rate
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+</mapper>

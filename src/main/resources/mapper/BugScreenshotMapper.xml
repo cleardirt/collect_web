@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.report.BugScreenshotMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.report.BugScreenshot">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="screenshot" jdbcType="VARCHAR" property="screenshot" />
+    <result column="report_id" jdbcType="INTEGER" property="reportId" />
+    <result column="fingerprint" jdbcType="VARBINARY" property="fingerprint" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bug_screenshot
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyProperty="id" parameterType="com.example.demo.po.report.BugScreenshot" useGeneratedKeys="true">
+    insert into bug_screenshot (id, screenshot, report_id, 
+      fingerprint)
+    values (#{id,jdbcType=INTEGER}, #{screenshot,jdbcType=VARCHAR}, #{reportId,jdbcType=INTEGER}, 
+      #{fingerprint,jdbcType=VARBINARY})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.report.BugScreenshot">
+    update bug_screenshot
+    set screenshot = #{screenshot,jdbcType=VARCHAR},
+      report_id = #{reportId,jdbcType=INTEGER},
+      fingerprint = #{fingerprint,jdbcType=VARBINARY}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, screenshot, report_id, fingerprint
+    from bug_screenshot
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, screenshot, report_id, fingerprint
+    from bug_screenshot
+  </select>
+    <select id="selectByReportId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, screenshot, report_id, fingerprint
+    from bug_screenshot
+    where report_id = #{report_id,jdbcType=INTEGER}
+    </select>
+</mapper>

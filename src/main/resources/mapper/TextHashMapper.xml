@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.report.TextHashMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.report.TextHash">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="report_id" jdbcType="INTEGER" property="reportId" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="title_hash" jdbcType="VARCHAR" property="titleHash" />
+    <result column="description_hash" jdbcType="VARCHAR" property="descriptionHash" />
+    <result column="step_hash" jdbcType="VARCHAR" property="stepHash" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from text_hash
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByReportId" parameterType="java.lang.Integer">
+      delete from text_hash
+        where report_id = #{reportId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.demo.po.report.TextHash" keyProperty="id" useGeneratedKeys="true">
+    insert into text_hash (id, report_id, task_id, 
+      title_hash, description_hash, step_hash
+      )
+    values (#{id,jdbcType=INTEGER}, #{reportId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, 
+      #{titleHash,jdbcType=VARCHAR}, #{descriptionHash,jdbcType=VARCHAR}, #{stepHash,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.report.TextHash">
+    update text_hash
+    set report_id = #{reportId,jdbcType=INTEGER},
+      task_id = #{taskId,jdbcType=INTEGER},
+      title_hash = #{titleHash,jdbcType=VARCHAR},
+      description_hash = #{descriptionHash,jdbcType=VARCHAR},
+      step_hash = #{stepHash,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, report_id, task_id, title_hash, description_hash, step_hash
+    from text_hash
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, report_id, task_id, title_hash, description_hash, step_hash
+    from text_hash
+  </select>
+    <select id="selectByReportId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      select id, report_id, task_id, title_hash, description_hash, step_hash
+      from text_hash
+      where report_id = #{reportId,jdbcType=INTEGER}
+    </select>
+</mapper>

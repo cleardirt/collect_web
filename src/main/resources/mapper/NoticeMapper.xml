@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.NoticeMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.Notice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="is_read" jdbcType="BIT" property="isRead" />
+    <result column="sent_date" jdbcType="TIMESTAMP" property="sentDate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from notice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.po.Notice" keyProperty="id" useGeneratedKeys="true">
+    insert into notice (id, uid, `type`,
+      content, is_read, sent_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{isRead,jdbcType=BIT}, #{sentDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.Notice">
+    update notice
+    set uid = #{uid,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      is_read = #{isRead,jdbcType=BIT},
+      sent_date = #{sentDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, uid, `type`, content, is_read, sent_date
+    from notice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, uid, `type`, content, is_read, sent_date
+    from notice
+  </select>
+  <select id="selectByUidType" resultMap="BaseResultMap" parameterType="map">
+    select id, uid, `type`, content, is_read, sent_date
+    from notice
+    where uid = #{uid,jdbcType=INTEGER} and `type` = #{type,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, uid, `type`, content, is_read, sent_date
+    from notice
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUidUnsent" resultMap="BaseResultMap" parameterType="map">
+    select id, uid, `type`, content, is_read, sent_date
+    from notice
+    where uid = #{uid,jdbcType=INTEGER} and `is_read`=0
+  </select>
+</mapper>

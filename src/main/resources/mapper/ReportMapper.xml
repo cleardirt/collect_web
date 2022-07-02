@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.report.ReportMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.report.Report">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="worker_id" jdbcType="INTEGER" property="workerId" />
+    <result column="worker_name" jdbcType="VARCHAR" property="workerName" />
+    <result column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="device_info" jdbcType="VARCHAR" property="deviceInfo" />
+    <result column="father_id" jdbcType="INTEGER" property="fatherId" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="real_rater_number" jdbcType="INTEGER" property="realRaterNumber" />
+    <result column="weighted_rater_number" jdbcType="DECIMAL" property="weightedRaterNumber" />
+    <result column="bug_description" jdbcType="VARCHAR" property="bugDescription" />
+    <result column="step_explanation" jdbcType="VARCHAR" property="stepExplanation" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByUid" parameterType="java.lang.Integer">
+      delete from report
+        where worker_id = #{uid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyProperty="id" parameterType="com.example.demo.po.report.Report" useGeneratedKeys="true">
+    insert into report (id, title, create_time, 
+      worker_id, worker_name, task_id, 
+      device_info, father_id, score, 
+      real_rater_number, weighted_rater_number, bug_description, 
+      step_explanation)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{workerId,jdbcType=INTEGER}, #{workerName,jdbcType=VARCHAR}, #{taskId,jdbcType=INTEGER}, 
+      #{deviceInfo,jdbcType=VARCHAR}, #{fatherId,jdbcType=INTEGER}, #{score,jdbcType=DECIMAL}, 
+      #{realRaterNumber,jdbcType=INTEGER}, #{weightedRaterNumber,jdbcType=DECIMAL}, #{bugDescription,jdbcType=VARCHAR}, 
+      #{stepExplanation,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.report.Report">
+    update report
+    set title = #{title,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      worker_id = #{workerId,jdbcType=INTEGER},
+      worker_name = #{workerName,jdbcType=VARCHAR},
+      task_id = #{taskId,jdbcType=INTEGER},
+      device_info = #{deviceInfo,jdbcType=VARCHAR},
+      father_id = #{fatherId,jdbcType=INTEGER},
+      score = #{score,jdbcType=DECIMAL},
+      real_rater_number = #{realRaterNumber,jdbcType=INTEGER},
+      weighted_rater_number = #{weightedRaterNumber,jdbcType=DECIMAL},
+      bug_description = #{bugDescription,jdbcType=VARCHAR},
+      step_explanation = #{stepExplanation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id, 
+    score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+    from report
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id, 
+    score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+    from report
+  </select>
+  <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id,
+           score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+    from report
+    where task_id = #{task_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTUid" parameterType="map" resultMap="BaseResultMap">
+    select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id,
+           score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+    from report
+    where task_id = #{task_id,jdbcType=INTEGER} and worker_id = #{uid,jdbcType=INTEGER}
+  </select>
+    <select id="selectByTesterId" resultMap="BaseResultMap">
+      select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id,
+             score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+      from report
+      where worker_id = #{uid,jdbcType=INTEGER}
+    </select>
+    <select id="selectByTidDev" parameterType="map" resultMap="BaseResultMap">
+      select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id,
+             score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+      from report
+      where task_id = #{task_id,jdbcType=INTEGER} and device_info = #{dev,jdbcType=VARCHAR}
+    </select>
+    <select id="selectDifferentByTidDev" parameterType="map" resultMap="BaseResultMap">
+      select id, title, create_time, worker_id, worker_name, task_id, device_info, father_id,
+             score, real_rater_number, weighted_rater_number, bug_description, step_explanation
+      from report
+      where task_id = #{task_id,jdbcType=INTEGER} and device_info = #{dev,jdbcType=VARCHAR}
+            and id != #{report_id,jdbcType=INTEGER}
+    </select>
+  <select id="selectEvaluableReport" parameterType="map" resultMap="BaseResultMap">
+    select r.id, r.title, r.create_time, r.worker_id, r.worker_name, r.task_id, r.device_info, r.father_id,
+           r.score, r.real_rater_number, r.weighted_rater_number, r.bug_description, r.step_explanation
+    from report as r
+    left join `task` as t
+    on r.task_id=t.id and test_start_time <![CDATA[ <= ]]> #{nowtime} and test_end_time <![CDATA[ >= ]]> #{nowtime}
+    right join  `task_progress` as p
+    on p.task_id=t.id and p.worker_id=#{user_id,jdbcType=INTEGER}
+    order by r.real_rater_number desc
+  </select>
+</mapper>

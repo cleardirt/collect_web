@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.user.UserDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.po.user.UserDevice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="windows" jdbcType="INTEGER" property="windows" />
+    <result column="linux" jdbcType="INTEGER" property="linux" />
+    <result column="macos" jdbcType="INTEGER" property="macos" />
+    <result column="harmonyos" jdbcType="INTEGER" property="harmonyos" />
+    <result column="ios" jdbcType="INTEGER" property="ios" />
+    <result column="android" jdbcType="INTEGER" property="android" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_device
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByUid" parameterType="java.lang.Integer">
+      delete from user_device
+        where user_id = #{user_id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.demo.po.user.UserDevice" keyProperty="id" useGeneratedKeys="true">
+    insert into user_device (id, user_id, windows, 
+      linux, macos, harmonyos, 
+      ios, android)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{windows,jdbcType=INTEGER}, 
+      #{linux,jdbcType=INTEGER}, #{macos,jdbcType=INTEGER}, #{harmonyos,jdbcType=INTEGER}, 
+      #{ios,jdbcType=INTEGER}, #{android,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.po.user.UserDevice">
+    update user_device
+    set user_id = #{userId,jdbcType=INTEGER},
+      windows = #{windows,jdbcType=INTEGER},
+      linux = #{linux,jdbcType=INTEGER},
+      macos = #{macos,jdbcType=INTEGER},
+      harmonyos = #{harmonyos,jdbcType=INTEGER},
+      ios = #{ios,jdbcType=INTEGER},
+      android = #{android,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, windows, linux, macos, harmonyos, ios, android
+    from user_device
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, windows, linux, macos, harmonyos, ios, android
+    from user_device
+    where user_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, windows, linux, macos, harmonyos, ios, android
+    from user_device
+  </select>
+</mapper>
