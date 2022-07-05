@@ -19,8 +19,8 @@ public class OssHelper {
     // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
     static String endpoint = "https://oss-cn-heyuan.aliyuncs.com";
     // 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
-    static String accessKeyId = "LTAI5tJ6hDmXKCDTYuG7Skrf";
-    static String accessKeySecret = "1DOfWoj5szh3hIgzLksRmDeaEPw7Sf";
+    static String accessKeyId = "为安全性隐藏";
+    static String accessKeySecret = "为安全性隐藏";
     // 填写Bucket名称，例如examplebucket。
     static String bucketName = "bonheur";
     // 填写Object完整路径，例如exampledir/exampleobject.txt。Object完整路径中不能包含Bucket名称。
